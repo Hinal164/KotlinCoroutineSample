@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        a = 7
+        a = 8
         when (a) {
             //non-blocking delay(...) and blocking Thread.sleep(...)
             1 -> simpleCoroutineFun()
@@ -39,7 +39,9 @@ class MainActivity : AppCompatActivity() {
 
 
             //Extract function refactoring
-            7->coroutineFunctionRefactoring()
+            7 -> coroutineFunctionRefactoring()
+
+            8 -> coroutineFun3()
         }
 
     }
@@ -113,30 +115,32 @@ class MainActivity : AppCompatActivity() {
         println("Hello")
     }
 
-   // It creates new coroutine scope and does not complete until all launched children complete.
-   // The main difference between runBlocking and coroutineScope is that the latter does not block the
-   // current thread while waiting for all children to complete.
-    private fun coroutineScopeBuilder() = runBlocking{// this: CoroutineScope
-       launch {
-           delay(2000L)
-           println("Task from runBlocking")
-       }
+    // It creates new coroutine scope and does not complete until all launched children complete.
+    // The main difference between runBlocking and coroutineScope is that the latter does not block the
+    // current thread while waiting for all children to complete.
+    private fun coroutineScopeBuilder() = runBlocking {
+        // this: CoroutineScope
+        launch {
+            delay(1000L)
+            println("Task from runBlocking")
+        }
 
-       coroutineScope { // Creates a new coroutine scope
-           launch {
-               delay(5000L)
-               println("Task from nested launch")
-           }
+        coroutineScope {
+            // Creates a new coroutine scope
+            launch {
+                delay(1000L)
+                println("Task from nested launch")
+            }
 
-           delay(1000L)
-           println("Task from coroutine scope") // This line will be printed before nested launch
-       }
+            delay(1000L)
+            println("Task from coroutine scope") // This line will be printed before nested launch
+        }
 
-       println("Coroutine scope is over") // This line is not printed until nested launch completes
+        println("Coroutine scope is over") // This line is not printed until nested launch completes
     }
 
 
-    private fun coroutineFunctionRefactoring()= runBlocking{
+    private fun coroutineFunctionRefactoring() = runBlocking {
         launch { doWorld() }
         println("Hello,")
     }
@@ -148,4 +152,16 @@ class MainActivity : AppCompatActivity() {
         println("World!")
     }
 
+    //Active coroutines that were launched in GlobalScope do not keep the process alive. They are like daemon threads.
+    private fun coroutineFun3()= runBlocking {
+        GlobalScope.launch {
+            repeat(10){
+                i->
+                println(" Hinal $i")
+                delay(1000L)
+            }
+        }
+        delay(2000L)
+        println("Hinal Vekariya")
+    }
 }
