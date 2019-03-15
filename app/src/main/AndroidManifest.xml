@@ -14,7 +14,9 @@
 
         <activity android:name=".CancellationAndTimeouts.CancellationAndTimeoutsActivity"/>
 
-        <activity android:name=".Channel.ChannelActivity">
+        <activity android:name=".Channel.ChannelActivity"/>
+
+        <activity android:name=".ComposingSuspendingFunctions.ComposingSuspendingFunctionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
