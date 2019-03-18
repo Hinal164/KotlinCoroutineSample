@@ -16,7 +16,9 @@
 
         <activity android:name=".Channel.ChannelActivity"/>
 
-        <activity android:name=".ComposingSuspendingFunctions.ComposingSuspendingFunctionActivity">
+        <activity android:name=".ComposingSuspendingFunctions.ComposingSuspendingFunctionActivity"/>
+
+        <activity android:name=".CoroutineContextAndDispatchers.CoroutineContextAndDispatcherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
