@@ -1,17 +1,45 @@
 package com.example.kotlincoroutinesample.CoroutineContextAndDispatchers
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.kotlincoroutinesample.R
 import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class CoroutineContextAndDispatcherActivity : AppCompatActivity() {
+class CoroutineContextAndDispatcherActivity : AppCompatActivity(), CoroutineScope {
+
+
+    lateinit var job: Job
+
+    private fun create() {
+        job = Job()
+    }
+
+    private fun destroy() {
+        job.cancel()
+    }
+
+    private fun doSomething() {
+        // launch ten coroutines for a demo, each working for a different time
+        repeat(10) { i ->
+            launch {
+                delay((i + 1) * 200L) // variable delay 200ms, 400ms, ... etc
+                println("Coroutine $i is done")
+            }
+        }
+    }
+
+    override val coroutineContext: CoroutineContext
+        get() =  Dispatchers.Default + job
+
+
     private var a: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dispatcher)
 
-        a = 7
+        a = 8
         when (a) {
             //Dispatchers And Threads
             1 -> dispatcherFun1()
@@ -46,8 +74,14 @@ class CoroutineContextAndDispatcherActivity : AppCompatActivity() {
             // same function as a thread name. It'll get displayed in the thread name that is executing this coroutine
             // when debugging mode is turned on.
             7->dispatcherFun7()
+
+
+            //Cancellation Via Explicit Job
+            8->dispatcherFun8()
         }
     }
+
+
 
     private fun dispatcherFun1() = runBlocking {
         launch {
@@ -184,5 +218,17 @@ class CoroutineContextAndDispatcherActivity : AppCompatActivity() {
             6
         }
         log("The answer for v1 / v2 = ${v1.await() / v2.await()}")
+    }
+
+
+    private fun dispatcherFun8()= runBlocking {
+        val activity = CoroutineContextAndDispatcherActivity()
+        activity.create() // create an activity
+        activity.doSomething() // run test function
+        println("Launched coroutines")
+        delay(500L) // delay for half a second
+        println("Destroying activity!")
+        activity.destroy() // cancels all coroutines
+        delay(1000) // visually confirm that they don't work
     }
 }
