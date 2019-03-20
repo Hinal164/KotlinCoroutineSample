@@ -18,7 +18,11 @@
 
         <activity android:name=".ComposingSuspendingFunctions.ComposingSuspendingFunctionActivity"/>
 
-        <activity android:name=".CoroutineContextAndDispatchers.CoroutineContextAndDispatcherActivity">
+        <activity android:name=".CoroutineContextAndDispatchers.CoroutineContextAndDispatcherActivity"/>
+
+        <activity android:name=".ExceptionHandling.ExceptionHandlingActivity"/>
+
+        <activity android:name=".SelectExpression.SelectExpressionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
